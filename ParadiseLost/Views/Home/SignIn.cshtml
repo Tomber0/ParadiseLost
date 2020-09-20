@@ -1,0 +1,16 @@
+﻿@model ParadiseLost.Models.User
+
+@using (Html.BeginForm("Register", "Home", FormMethod.Post))
+{
+    <p>
+        @Html.LabelFor(m => m.UserName, "Имя")<br>
+        @Html.TextBoxFor(m => m.UserName)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Email, "Почта")<br>
+        @Html.TextBoxFor(m => m.Email)
+    </p>
+    <p>
+        <input type ="submit"  value="Отправить"/>
+    </p>
+} 
