@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using ParadiseLost.Models;
+using ParadiseLost.ViewModels;
 
 namespace ParadiseLost.Controllers
 {
@@ -34,8 +37,17 @@ namespace ParadiseLost.Controllers
 
             return View();
         }
-        public IActionResult Register(User user) 
+
+        //Id=Guid.NewGuid().ToString("N")
+        public async Task< IActionResult> Register(RegistrationModel user) 
         {
+            if (ModelState.IsValid) 
+            {
+                //User user = 
+            
+            }
+            return View(user);
+
             return Content($"User email => {user.Email},,, User name =>{user.UserName}");
                 //Redirect("~/Home/Index");
             

@@ -1,16 +1,38 @@
-﻿@model ParadiseLost.Models.User
+﻿@model ParadiseLost.ViewModels.RegistrationModel
 
 @using (Html.BeginForm("Register", "Home", FormMethod.Post))
 {
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
     <p>
         @Html.LabelFor(m => m.UserName, "Имя")<br>
         @Html.TextBoxFor(m => m.UserName)
+        <span asp-validation-for="UserName"></span>
     </p>
     <p>
         @Html.LabelFor(m => m.Email, "Почта")<br>
         @Html.TextBoxFor(m => m.Email)
+        <span asp-validation-for="Email"></span>
+
     </p>
     <p>
-        <input type ="submit"  value="Отправить"/>
+        @Html.LabelFor(m => m.Password, "Пароль")<br>
+        @Html.TextBoxFor(m => m.Password)
+        <span asp-validation-for="Password"></span>
+
     </p>
-} 
+    <p>
+        @Html.LabelFor(m => m.ComfirmPassword, "Подтвердите пароль")<br>
+        @Html.TextBoxFor(m => m.ComfirmPassword)
+        <span asp-validation-for="ComfirmPassword"></span>
+
+    </p>
+    <p>
+        <input type="submit" value="Отправить" />
+    </p>
+}
+
+@section scripts{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
