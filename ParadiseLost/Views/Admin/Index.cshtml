@@ -1,2 +1,10 @@
-﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+﻿@model IEnumerable< ParadiseLost.Models.User>
+@{ 
+    @ViewBag.Title = "Список пользователей";
+    }
+
+@Html.ActionLink("Добавть пользователя", "Create")
+
+
+
 

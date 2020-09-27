@@ -1,6 +1,6 @@
 ﻿@model ParadiseLost.ViewModels.RegistrationModel
 
-@using (Html.BeginForm("Register", "Home", FormMethod.Post))
+@using (Html.BeginForm("CreateNewUser", "User", FormMethod.Post))
 {
     <div class="validation" asp-validation-summary="ModelOnly"></div>
     <p>
@@ -16,13 +16,14 @@
     </p>
     <p>
         @Html.LabelFor(m => m.Password, "Пароль")<br>
-        @Html.TextBoxFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password)
+
         <span asp-validation-for="Password"></span>
 
     </p>
     <p>
         @Html.LabelFor(m => m.ComfirmPassword, "Подтвердите пароль")<br>
-        @Html.TextBoxFor(m => m.ComfirmPassword)
+        @Html.PasswordFor(m => m.ComfirmPassword)
         <span asp-validation-for="ComfirmPassword"></span>
 
     </p>

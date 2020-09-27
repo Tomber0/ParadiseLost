@@ -34,7 +34,6 @@ namespace ParadiseLost.Controllers
 
         public IActionResult SignIn() 
         {
-
             return View();
         }
 
@@ -48,7 +47,7 @@ namespace ParadiseLost.Controllers
             }
             return View(user);
 
-            return Content($"User email => {user.Email},,, User name =>{user.UserName}");
+            //return Content($"User email => {user.Email},,, User name =>{user.UserName}");
                 //Redirect("~/Home/Index");
             
         }

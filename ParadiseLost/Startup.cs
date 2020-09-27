@@ -12,6 +12,7 @@ using ParadiseLost.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ParadiseLost.Models;
 
 namespace ParadiseLost
 {
@@ -30,16 +31,16 @@ namespace ParadiseLost
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<User, IdentityRole>(options =>
             {
-            options.Password.RequiredLength = 5;
-            options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequiredLength = 5;
+                options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
