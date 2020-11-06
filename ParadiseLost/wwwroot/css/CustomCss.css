@@ -1,0 +1,17 @@
+﻿.bg-custom {
+    background-color: #505440;
+}
+.nav-text-color-custom {
+    color :white;
+}
+.bg-color-custom{
+
+}
+body {
+    background-image: url("../img/bg.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    background-color: rgba(0, 128, 0, 0.3);
+}

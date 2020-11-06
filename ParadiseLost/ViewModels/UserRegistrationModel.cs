@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParadiseLost.ViewModels
 {
-    public class RegistrationModel
+    public class UserRegistrationModel
     {
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Укажите почту")]

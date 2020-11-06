@@ -1,0 +1,22 @@
+﻿@model ParadiseLost.ViewModels.UserEditModel
+@{
+    ViewData["Title"] = "Список пользователей";
+}
+
+
+<form asp-action="Edit" asp-controller="Admin" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+    </div>
+    <div class="form-group">
+        <input type="text" asp-for="Email" />
+    </div>
+    <div class="form-group">
+        <input type="text" asp-for="UserName" />
+    </div>
+    <div class="form-group">
+        <input value="Сохранить" class="btn btn-info" type="submit" />
+    </div>
+
+</form>

@@ -44,11 +44,10 @@ namespace ParadiseLost.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> CreateNewUser(RegistrationModel userModel) 
+        public async Task<IActionResult> CreateNewUser(UserRegistrationModel userModel) 
         {
             if (ModelState.IsValid)
             {
-
                 User iUser = await _context.Persons.FirstOrDefaultAsync(u => userModel.Email == u.Email);
                 if (iUser == null)
                 {
@@ -98,7 +97,7 @@ namespace ParadiseLost.Controllers
             return RedirectToAction("Index","Home");
         }
         [HttpPost]
-        public async Task<IActionResult> LoginIntoAccount(LoginModel userModel) 
+        public async Task<IActionResult> LoginIntoAccount(UserLoginModel userModel) 
         {
             if (ModelState.IsValid) { 
                 await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);

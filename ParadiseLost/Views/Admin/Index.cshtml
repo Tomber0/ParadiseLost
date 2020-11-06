@@ -1,10 +1,24 @@
 ﻿@model IEnumerable< ParadiseLost.Models.User>
-@{ 
-    @ViewBag.Title = "Список пользователей";
-    }
+
+@{
+    ViewData["Title"] = "Панель пользователей";
+}
+
 
 @Html.ActionLink("Добавть пользователя", "Create")
-
-
-
-
+<table class="table">
+    <tr><th>Email</th><th>Имя</th></tr>
+    @foreach (var user in Model)
+     {
+        <tr>
+            <td>@user.Email</td>
+            <td>@user.UserName</td>
+            <td>
+                <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                    <a class="btn btn-sm btn-primary"  asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
+                    <button class="btn btn-sm btn-danger" type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+     }
+</table>

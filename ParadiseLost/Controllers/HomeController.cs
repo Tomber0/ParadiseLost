@@ -38,7 +38,7 @@ namespace ParadiseLost.Controllers
         }
 
         //Id=Guid.NewGuid().ToString("N")
-        public async Task< IActionResult> Register(RegistrationModel user) 
+        public async Task< IActionResult> Register(UserRegistrationModel user) 
         {
             if (ModelState.IsValid) 
             {
