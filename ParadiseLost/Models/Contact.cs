@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 namespace ParadiseLost.Models
 {
     public class Contact
-    {
-        
-        
+    {        
         [Key]
         [MaxLength(50)]
         public string Id { get; set; }
@@ -22,9 +20,5 @@ namespace ParadiseLost.Models
         [MaxLength(250)]
         public string Email { get; set; }
         public Location ConatactLocation { get; set; }
-            
-
-
-
     }
 }

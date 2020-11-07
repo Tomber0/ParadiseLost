@@ -25,6 +25,9 @@ namespace ParadiseLost.Models
         public string Location { get; set; }
         public Company TripCompany { get; set; }
 
+        public bool Visible { get; set; }
+        [MaxLength(3000)]
+        public string Tags { get; set; }
 
     }
 }
