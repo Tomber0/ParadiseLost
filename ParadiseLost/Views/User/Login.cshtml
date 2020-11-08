@@ -1,27 +1,33 @@
 ﻿@model ParadiseLost.ViewModels.UserLoginModel
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-4 ml-3 mt-3 info-pannel" >
+            @using (Html.BeginForm("LoginIntoAccount", "User", FormMethod.Post))
+            {
+                <div class="validation" asp-validation-summary="ModelOnly"></div>
+                <p>
+                    @Html.LabelFor(m => m.UserName, "Имя")<br>
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "default-input" })
+                    <span asp-validation-for="UserName" class="alert-info-label"></span>
+                </p>
+                <p>
+                    @Html.LabelFor(m => m.Password, "Пароль")<br>
+                    @Html.PasswordFor(m => m.Password,new { @class = "default-input" })
 
-@using (Html.BeginForm("LoginIntoAccount", "User", FormMethod.Post))
-{
-    <div class="validation" asp-validation-summary="ModelOnly"></div>
-    <p>
-        @Html.LabelFor(m => m.UserName, "Имя")<br>
-        @Html.TextBoxFor(m => m.UserName)
-        <span asp-validation-for="UserName"></span>
-    </p>
-    <p>
-        @Html.LabelFor(m => m.Password, "Пароль")<br>
-        @Html.PasswordFor(m => m.Password)
+                    <span asp-validation-for="Password" class="alert-info-label"></span>
 
-        <span asp-validation-for="Password"></span>
+                </p>
+                <p>
+                    <input type="submit"  value="Отправить" />
+                </p>
+            }
+        </div>
+        @section scripts{
 
-    </p>
-    <p>
-        <input type="submit" value="Отправить" />
-    </p>
-}
+            <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        }
 
-@section scripts{
-
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-}
+        
+    
+    </div>

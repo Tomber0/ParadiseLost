@@ -5,20 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ParadiseLost</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href ="~/css/CustomCss.css" />
+    <link rel="stylesheet" href="~/css/site.css"runat="server"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/css/customCss.css" runat="server" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-custom box-shadow mb-3">
-            <a class="navbar-brand" href="#">1488</a>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-custom box-shadow">
+            <a class="navbar-brand" href="#">Name</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="#">Link1</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link2</a>
@@ -27,8 +32,8 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main"  class="pb-3">
+    <div class="container-fluid">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
