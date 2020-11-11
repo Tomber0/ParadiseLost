@@ -13,7 +13,8 @@ namespace ParadiseLost.Models
         public string Id { get; set; }
 
         [MaxLength(250)]
-        public string Name { get; set; }
+        public string Name { get; set; }//dont use
+        //use contact->Name instead  !
         
         public Contact CompanyContact { get; set; }
 

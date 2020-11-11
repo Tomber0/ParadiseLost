@@ -1,5 +1,60 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿@model ParadiseLost.ViewModels.TripCreationEditModel
+@*
+    создание путёвки
+
 *@
-@{
-}
+
+<div class="col-1"></div>
+<div class="col-5 ml-3 mt-3 info-pannel">
+    @using (Html.BeginForm("CreateNew", "Trip", FormMethod.Post))
+    {
+
+        <input type="hidden" name="userId" value="" />
+
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <p>
+            @Html.LabelFor(m => m.Name, "Название")<br>
+            @Html.TextBoxFor(m => m.Name, new { @class = "default-input" })
+            <span asp-validation-for="Name" class="alert-info-label"></span>
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Description, "Описание")<br>
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+            <span asp-validation-for="Description" class="alert-info-label"></span>
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Tags, "Тэги")<br>
+            @Html.TextAreaFor(m => m.Tags, new { @class = "form-control" })
+            <span asp-validation-for="Tags" class="alert-info-label"></span>
+        </p>
+
+        <p>
+            @Html.LabelFor(m => m.Location.City, "Город")<br>
+            @Html.TextBoxFor(m => m.Location.City, new { @class = "form-control" })
+            <span asp-validation-for="Location.City" class="alert-info-label"></span>
+        </p>
+
+        <p>
+            @Html.LabelFor(m => m.Location.Street, "Улица")<br>
+            @Html.TextBoxFor(m => m.Location.Street, new { @class = "form-control" })
+            <span asp-validation-for="Location.City" class="alert-info-label"></span>
+        </p>
+
+        <p>
+            @Html.LabelFor(m => m.Visible, "Видимо")<br>
+            @Html.CheckBoxFor(m => m.Visible, new { @class = "form-check-input", @checked = "checked" })
+            <span asp-validation-for="Visible" class="alert-info-label"></span>
+        </p>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+
+    }
+</div>
+
+
+
+
+    @section scripts{
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    }
+

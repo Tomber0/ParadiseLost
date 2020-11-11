@@ -106,14 +106,14 @@ namespace ParadiseLost.Controllers
 
                 if (result.Succeeded)
                 {
-                    RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else 
                 {
                     ModelState.AddModelError("","Неправильный логин \\пароль");              
                 }            
             }
-            return View(userModel);
+            return RedirectToAction("Login","User");
         }
     }
 }

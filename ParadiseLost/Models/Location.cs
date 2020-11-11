@@ -17,7 +17,5 @@ namespace ParadiseLost.Models
         public string Street { get; set; }
         [MaxLength(50)]
         public string Coordinates { get; set; }
-
-
     }
 }
