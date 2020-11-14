@@ -16,8 +16,7 @@ namespace ParadiseLost.Data
         public DbSet<Trip> Trips  { get; set; }
         public DbSet<User> Persons  { get; set; }
         public DbSet<Location> Locations  { get; set; }
-        //public DbSet<Message> Messages  { get; set; }  ???
-
+        public DbSet<Message> Messages  { get; set; }  
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

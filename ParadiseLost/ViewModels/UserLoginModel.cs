@@ -14,6 +14,5 @@ namespace ParadiseLost.ViewModels
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Введите пароль")]
         public string Password { get; set; }
-
     }
 }

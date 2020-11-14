@@ -10,7 +10,7 @@ namespace ParadiseLost.Models
     public class User : IdentityUser
     {
         //public override string Id { get => base.Id; set => base.Id = value; }
-        public Contact UserContact { get; set; }
+        public Contact Contact { get; set; }
         public Company Company { get; set; }
     }
 }

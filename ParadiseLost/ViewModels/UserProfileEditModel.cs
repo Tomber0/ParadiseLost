@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace ParadiseLost.ViewModels
 {
-    public class UserRegistrationModel
+    public class UserProfileEditModel
     {
+        public string Id { get; set; }
+
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Укажите почту")]
         public string Email { get; set; }
@@ -16,10 +18,20 @@ namespace ParadiseLost.ViewModels
         public string UserName { get; set; }
 
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Введите пароль")]
+        //[Required(ErrorMessage = "Введите пароль")]
         public string Password { get; set; }
-        [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Введенные пароли отличаются")]
         public string ComfirmPassword { get; set; }
+
+        public string Name { get; set; }
+        [MaxLength(250)]
+        public string SName { get; set; }
+        
+        [MaxLength(50)]
+        //
+        public string Phone { get; set; }
+        public string City { get; set; }
+        public string Street { get; set; }
+
     }
 }

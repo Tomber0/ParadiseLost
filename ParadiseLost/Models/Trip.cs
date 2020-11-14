@@ -23,7 +23,7 @@ namespace ParadiseLost.Models
         public string Description { get; set; }
         [MaxLength(250)]
         public Location Location { get; set; }
-        public Company TripCompany { get; set; }
+        public Company Company { get; set; }
 
         public bool Visible { get; set; }
         [MaxLength(3000)]

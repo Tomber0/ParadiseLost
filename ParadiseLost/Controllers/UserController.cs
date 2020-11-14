@@ -59,8 +59,7 @@ namespace ParadiseLost.Controllers
                     {
                         //if create account is successfull
                         //add to database
-                        
-                        
+                                                
                         //_context.Persons.Add(user);
                         await _context.SaveChangesAsync();
 

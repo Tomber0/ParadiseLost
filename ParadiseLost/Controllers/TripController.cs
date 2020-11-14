@@ -26,11 +26,7 @@ namespace ParadiseLost.Controllers
             _userManager = userManager;
 
         }
-        public IActionResult Create() 
-        {
-            
-            return View();
-        }
+        public IActionResult Create() => View();
         public IActionResult Edit() => View();
 
         [HttpPost]
@@ -65,8 +61,6 @@ namespace ParadiseLost.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-
-
 
         public async Task<IActionResult> EditTrip(TripCreationEditModel trip) 
         {
@@ -116,6 +110,18 @@ namespace ParadiseLost.Controllers
                 }
             }
             return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> DeleteTrip(string id)
+        {
+            if (id != null)
+            {
+                var trip = await _context.Trips.FirstOrDefaultAsync(c => c.Id == id);
+                var result = _context.Trips.Remove(trip);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "Home");
+
         }
 
         public IActionResult Index()

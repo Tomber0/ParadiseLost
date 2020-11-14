@@ -17,8 +17,5 @@ namespace ParadiseLost.ViewModels
             AllRoles = new List<IdentityRole>();
             UserRoles = new List<string>();
         }
-
-
-
     }
 }

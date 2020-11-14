@@ -1,1 +1,53 @@
 ﻿
+@model ParadiseLost.ViewModels.CompanyCreateEditModel
+<div class="col-1"></div>
+
+<div class="col-5 ml-3 mt-3 info-pannel">
+    @using (Html.BeginForm("EditCompany", "Company", FormMethod.Post))
+    {
+
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <p>
+            @Html.LabelFor(m => m.Name, "Название компании")<br>
+            @Html.TextBoxFor(m => m.Name, new { @class = "default-input" })
+            <span asp-validation-for="Name" class="alert-info-label"></span>
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Description, "Описание компании")<br>
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+            <span asp-validation-for="Description" class="alert-info-label"></span>
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Email, "Электронная почта")<br>
+            @Html.TextAreaFor(m => m.Email, new { @class = "form-control" })
+            <span asp-validation-for="Email" class="alert-info-label"></span>
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Phone, "Телефон")<br>
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+            <span asp-validation-for="Phone" class="alert-info-label"></span>
+        </p>
+
+        <p>
+            @Html.LabelFor(m => m.City, "Город")<br>
+            @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+            <span asp-validation-for="City" class="alert-info-label"></span>
+        </p>
+
+        <p>
+            @Html.LabelFor(m => m.Street, "Улица")<br>
+            @Html.TextBoxFor(m => m.Street, new { @class = "form-control" })
+            <span asp-validation-for="Street" class="alert-info-label"></span>
+        </p>
+
+        <button type="submit" class="btn btn-primary">Добавить</button>
+
+    }
+</div>
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

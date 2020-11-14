@@ -9,7 +9,7 @@
     @using (Html.BeginForm("CreateNew", "Trip", FormMethod.Post))
     {
 
-        <input type="hidden" name="userId" value="" />
+        <input type="hidden" name="Id" value="@Model.Id" />
 
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <p>
@@ -37,11 +37,11 @@
         <p>
             @Html.LabelFor(m => m.Location.Street, "Улица")<br>
             @Html.TextBoxFor(m => m.Location.Street, new { @class = "form-control" })
-            <span asp-validation-for="Location.City" class="alert-info-label"></span>
+            <span asp-validation-for="Location.Street" class="alert-info-label"></span>
         </p>
 
         <p>
-            @Html.LabelFor(m => m.Visible, "Видимо")<br>
+            @Html.LabelFor(m => m.Visible, "Видимость в каталоге")<br>
             @Html.CheckBoxFor(m => m.Visible, new { @class = "form-check-input", @checked = "checked" })
             <span asp-validation-for="Visible" class="alert-info-label"></span>
         </p>
@@ -49,10 +49,6 @@
 
     }
 </div>
-
-
-
-
     @section scripts{
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
