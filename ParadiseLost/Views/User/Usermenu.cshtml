@@ -1,6 +1,51 @@
 ﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+    вывод
+    сообщений
 *@
 @{
 }
-@model Enumerable<ParadiseLost.ViewModels.MessageCreateEditModel> 
+@model IEnumerable<ParadiseLost.ViewModels.MessageShowModel>
+
+@if (Model.ToList().Count > 0)
+{
+
+    @foreach (var item in Model)
+    {
+        @if (item.IsViewed)
+        {
+            <div class="card bg-success">
+                <div class="card-header">
+                    @item.SelectedTrip.Name
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>@item.MessageText</p>
+                        <footer class="blockquote-footer">@item.MessageAnswerText</footer>
+                    </blockquote>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card bg-danger">
+                <div class="card-header">
+                    @item.SelectedTrip.Name
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>@item.MessageText</p>
+                    </blockquote>
+                </div>
+            </div>
+        }
+    }
+}
+else 
+{
+<div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+    <div class="col-md-6 px-0">
+        <h1 class="display-4 font-italic">Список сообщений пуст!</h1>
+        <p class="lead my-3">Для пополнения списка добавте интересную путёвку через главную страницу</p>
+        <a asp-action="Index" asp-controller="Home" class="alert-link">Вернутся на главную</a>
+    </div>
+</div>}

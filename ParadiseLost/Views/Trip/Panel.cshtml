@@ -1,8 +1,45 @@
 ﻿@*
-    панель для администрирования фирмы:
-        1. Просмотр путёвок фирмы
-        2. 
-        
+    show trip
 *@
 @{
 }
+@model ParadiseLost.ViewModels.TripShowModel
+
+<div class="jumbotron" style="background-size:cover; background-image:url(@Model.Image.Path)">
+    <h1 class="display-4">@Model.Name</h1>
+    <hr class="my-4">
+    <form asp-action="Create" asp-controller="Message" asp-route-id="@Model.Id" method="post">
+        <button class="btn btn-sm btn-warning" type="submit">Выбрать</button>
+    </form>
+    <small class="text-muted">@Model.Tags</small>
+</div>
+
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Город:</label>
+    <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="@Model.Location.City">
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Улица:</label>
+    <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=" @Model.Location.Street">
+    </div>
+</div>
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Оказатель услуги:</label>
+    <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="@Model.Company.Contact.Name">
+    </div>
+    <label for="staticEmail" class="col-sm-2 col-form-label">Почта:</label>
+    <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="@Model.Company.Contact.Email">
+    </div>
+</div>
+<div class="form-group">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Описание</label>
+    <div class="col-sm-10">
+        <textarea type="text" readonly class="form-control-plaintext" rows="5" id="comment" asp-for="Description"value="@Model.Location.City"></textarea>
+    </div>
+</div>

@@ -1,20 +1,20 @@
 ﻿@model ParadiseLost.ViewModels.TripCreationEditModel
 @*
     создание путёвки
+                <div class="custom-file">
+                <input type="file" class="custom-file-input" name="Image" asp-for="Image">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+
 
 *@
 
-<div class="col-1"></div>
 <div class="col-5 ml-3 mt-3 info-pannel">
-    @using (Html.BeginForm("CreateNew", "Trip", FormMethod.Post))
-    {
-
-        <input type="hidden" name="Id" value="@Model.Id" />
-
+    <form asp-action="Create" asp-controller="Trip" method="post" enctype="multipart/form-data">
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <p>
             @Html.LabelFor(m => m.Name, "Название")<br>
-            @Html.TextBoxFor(m => m.Name, new { @class = "default-input" })
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
             <span asp-validation-for="Name" class="alert-info-label"></span>
         </p>
         <p>
@@ -39,18 +39,34 @@
             @Html.TextBoxFor(m => m.Location.Street, new { @class = "form-control" })
             <span asp-validation-for="Location.Street" class="alert-info-label"></span>
         </p>
-
         <p>
-            @Html.LabelFor(m => m.Visible, "Видимость в каталоге")<br>
-            @Html.CheckBoxFor(m => m.Visible, new { @class = "form-check-input", @checked = "checked" })
-            <span asp-validation-for="Visible" class="alert-info-label"></span>
-        </p>
-        <button type="submit" class="btn btn-primary">Добавить</button>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" asp-for="Visible" value="True" id="customCheck1">
+                <label class="custom-control-label" for="customCheck1">Видимость в каталоге</label>
+            </div>
 
-    }
+        </p>
+        <p>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupFileAddon01">Загрузить</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" name="Image" asp-for="Image" class="custom-file-input" id="inputGroupFile01"
+                           aria-describedby="inputGroupFileAddon01">
+                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                </div>
+            </div>
+
+        </p>
+        <hr class="mb-4">
+
+        <input type="submit" class="btn btn-lg btn-block btn-primary" value="Добавить" />
+
+    </form>
 </div>
-    @section scripts{
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    }
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
 

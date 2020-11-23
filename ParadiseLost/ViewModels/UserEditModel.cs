@@ -17,8 +17,8 @@ namespace ParadiseLost.ViewModels
         [Required(ErrorMessage = "Не указано имя пользователя")]
         public string UserName { get; set; }
 
-        [DataType(DataType.Password)]
+/*        [DataType(DataType.Password)]
         [Required(ErrorMessage = "Введите пароль")]
         public string Password { get; set; }
-    }
+*/    }
 }

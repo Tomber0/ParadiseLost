@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using ParadiseLost.Models;
+﻿using ParadiseLost.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,21 +7,20 @@ using System.Threading.Tasks;
 
 namespace ParadiseLost.ViewModels
 {
-    public class TripCreationEditModel
+    public class TripShowModel
     {
-
+        [Required]
+        [MaxLength(255)]
         public string Id { get; set; }
-        public User User { get; set; }
-        [Required(ErrorMessage = "Укажите название!")]
+        [MaxLength(255)]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "Не указано описание!")]
+        [MaxLength(950000)]
         public string Description { get; set; }
+        [MaxLength(250)]
         public Location Location { get; set; }
-        public bool Visible { get; set; }
-        public IFormFile Image { get; set; }
-        public string Imagestr { get; set; }
+        public Company Company { get; set; }
         [MaxLength(100)]
         public string Tags { get; set; }
+        public Images Image { get; set; }
     }
 }

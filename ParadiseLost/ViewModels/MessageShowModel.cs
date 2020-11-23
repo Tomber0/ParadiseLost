@@ -11,7 +11,7 @@ namespace ParadiseLost.ViewModels
     {
         public string Id { get; set; }
         [MaxLength(250)]
-        public User UserInvoker { get; set; }
+        public Contact UserInvoker { get; set; }
         [MaxLength(250)]
         public Trip SelectedTrip { get; set; }
         public bool IsViewed { get; set; }

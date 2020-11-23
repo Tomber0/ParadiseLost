@@ -1,13 +1,14 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Настройка";
+}
+
 @model ParadiseLost.ViewModels.CompanyCreateEditModel
 <div class="col-1"></div>
 
 <div class="col-5 ml-3 mt-3 info-pannel">
-    @using (Html.BeginForm("EditCompany", "Company", FormMethod.Post))
+    @using (Html.BeginForm("Edit", "Company", FormMethod.Post))
     {
-
         <input type="hidden" name="Id" value="@Model.Id" />
-
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <p>
             @Html.LabelFor(m => m.Name, "Название компании")<br>

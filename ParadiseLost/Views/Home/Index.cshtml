@@ -1,39 +1,213 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Главная";
 }
+@model IEnumerable<ParadiseLost.ViewModels.TripShowModel>
 
-<div class="row" style = "background-color:#dad9d9;">
-    <div class="col-1 leftcol">
-    
-    </div>
-    <div class="col-2">
-        <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-                @Html.ActionLink("Регистрация", "Create", "User", null, new { @class = "nav-link" })
-            </li>
-            <li class="nav-item">
-                @Html.ActionLink("Логин", "Login", "User")
-            </li>
-            <li class="nav-item">
-                @Html.ActionLink("АдминКа", "Index", "Admin")
-            </li>
-            <li class="nav-item">
-                @Html.ActionLink("Роли", "Index", "Roles")
-            </li>
-            <li class="nav-item">
-                @Html.ActionLink("Путёвка", "Create", "Trip")
-            </li>
-        </ul>
-    </div>
-    <div class="col-6">
-        <div class="text-center">
-            <h1 class="display-4">Welcome</h1>
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="row mt-2 p-3 justify-content-center">
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
-                @Html.ActionLink("Регистрация", "Create", "User")
-                @Html.ActionLink("Логин", "Login", "User")
-                @Html.ActionLink("АдминКа", "Index", "Admin")
-                @Html.ActionLink("Роли", "Index", "Roles")
+                <strong>!</strong>  <a class="alert-link" asp-action="Login" asp-controller="User">Войдите</a> в систему или <a class="alert-link" asp-action="Create" asp-controller="User">зарегестрируйтесь</a> для дополнительных возможностей  <strong>!</strong>
             </p>
         </div>
     </div>
+}
+<div class="row mb-2">
+    <div class="nav-scroller py-1 mb-2 justify-content-center">
+            <form asp-action="Index" asp-controller="Home" asp-route-id="tags" method="get">
+                <div class="input-group d-flex p-2 mb-3">
+                    <input type="text" class="form-control" name="tags" id="tags" placeholder="...">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Поиск</button>
+                    </div>
+                </div>
+            </form>
+        
+    </div>
 </div>
+
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">                    
+                    @foreach (var trip in Model)
+                    {
+                        <div class="col-md-4">
+                            <div class="card mb-4 box-shadow">
+                                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;"
+                                     src="@trip.Image.Path"
+                                     data-holder-rendered="true">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        @if (trip.Description.Length > 45)
+                                        {
+                                            var newDesc = trip.Description.Substring(0, 37);
+                                            newDesc = newDesc + "...";
+                                            @newDesc
+                                        }
+                                        else
+                                        {
+                                            @trip.Description
+                                        }
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <form asp-action="Create" asp-controller="Message" asp-route-id="@trip.Id" method="get">
+                                                <button class="btn btn-sm btn-outline-secondary" type="submit">Выбрать</button>
+                                            </form>
+                                            <form asp-action="Panel" asp-controller="Trip" asp-route-id="@trip.Id">
+                                                <button class="btn btn-sm btn-outline-secondary" type="submit">Просмотреть</button>
+                                            </form>
+                                        </div>
+                                        <small class="text-muted">@trip.Tags</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+
+
+        @*
+
+                                    @foreach (var trip in Model)
+                        {
+                            <div class="card mb-3" style="max-width:1080px;">
+                                <div class="row no-gutters">
+                                    <div class="col-md-4">
+                                        <img src="@trip.Image.Path" class="card-img" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@trip.Name</h5>
+                                            <form asp-action="Create" asp-controller="Message" asp-route-id="@trip.Id" method="post">
+                                                <button class="btn btn-sm btn-warning" type="submit">Выбрать</button>
+                                            </form>
+                                            <p class="card-text">@trip.Description</p>
+                                            <p class="card-text"><small class="text-muted">@trip.Tags</small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                            <!--
+                    content
+
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;"
+                            <div class="card-body">
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                    </div>
+                                    <small class="text-muted">9 mins</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                                                <div class="card mb-3" style="max-width:1080px;">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-4">
+                                            <img src="trip.Image.Path" class="card-img" alt="...">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">trip.Name</h5>
+                                                <form asp-action="Create" asp-controller="Message" asp-route-id="trip.Id" method="post">
+                                                    <button class="btn btn-sm btn-warning" type="submit">Выбрать</button>
+                                                </form>
+                                                <p class="card-text">trip.Description</p>
+                                                <p class="card-text"><small class="text-muted">trip.Tags</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    -->
+
+
+
+            <div class="row mb-2">
+                <div class="nav-scroller py-1 mb-2">
+                    <nav class="nav d-flex justify-content-start">
+                        <a asp-action="Index" asp-controller="User" class="p-2 text-muted">Профиль</a>
+                        <a asp-action="Edit" asp-controller="User" class="p-2 text-muted">Изменить данные для входа</a>
+                        <a asp-action="Profile" asp-controller="User" class="p-2 text-muted">Изменить данные профиля(имя, город, улицу)</a>
+                        <a asp-action="Usermenu" asp-controller="User" class="p-2 text-muted">Сообщения</a>
+                        <div class="btn-group">
+                            <button type="button" class="p-2 text-muted dropdown-toggle" data-toggle="dropdown">
+                                Для работников компании
+                            </button>
+                            <div class="dropdown-menu">
+                                <a asp-action="Index" asp-controller="Company" class="dropdown-item">Главная</a>
+                                <a asp-action="Trips" asp-controller="Company" class="dropdown-item">Путёвки компании</a>
+                                <a asp-action="Edit" asp-controller="Company" class="dropdown-item">Изменение компании</a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div class="row mb-2">
+
+                <div class="col-8">
+                    <h1 class="display-4 text-center">Welcome</h1>
+                    <p>
+                        @Html.ActionLink("Регистрация", "Create", "User")
+                        @Html.ActionLink("Логин", "Login", "User")
+                        @Html.ActionLink("АдминКа", "Index", "Admin")
+                        @Html.ActionLink("Роли", "Index", "Roles")
+                    </p>
+                    <p>
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+                        SampleText SampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleTextSampleText
+
+                    </p>
+
+                </div>
+            </div>
+        *@

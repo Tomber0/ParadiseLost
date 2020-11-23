@@ -10,7 +10,6 @@ namespace ParadiseLost.Models
     {
         [Key]
         [MaxLength(50)]
-
         public string Id { get; set; }
         [MaxLength(250)]
         public Contact Invoker { get; set; }

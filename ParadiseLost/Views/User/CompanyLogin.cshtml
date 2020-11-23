@@ -1,0 +1,16 @@
+﻿@model ParadiseLost.ViewModels.UserCompanyLoginViewModel
+<div class="col-1"></div>
+<div class="col-4 ml-3 mt-3 info-pannel">
+
+    @using (Html.BeginForm("CompanyLogin", "Company", FormMethod.Post))
+    {
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <p>
+            @Html.LabelFor(m => m.Code, "Введите код для присоеденения к компании:")
+            @Html.TextBoxFor(m => m.Code, new { @class = "default-input" })
+            <span asp-validation-for="Code" class="alert-info-label"></span>
+        </p>
+        <input type="submit" class=" btn btn-success" value="Вход" />
+
+    }
+</div>

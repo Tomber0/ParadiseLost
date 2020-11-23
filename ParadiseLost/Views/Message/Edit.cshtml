@@ -6,9 +6,8 @@
 @model ParadiseLost.ViewModels.MessageCreateEditModel
 <div class="col-1"></div>
 <div class="col-5 ml-3 mt-3 info-pannel">
-    @using (Html.BeginForm("EditMessage", "Message", FormMethod.Post))
+    @using (Html.BeginForm("Edit", "Message", FormMethod.Post))
     {
-
         <input type="hidden" name="Id" value="@Model.Id" />
         <input type="hidden" name="Invoker" value="@Model.Invoker" />
 

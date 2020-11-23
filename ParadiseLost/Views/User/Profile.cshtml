@@ -1,0 +1,38 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ParadiseLost.ViewModels.UserOuterProfileChangeViewModel
+
+<div class="container p-3 my-3 border">
+    <form asp-action="Profile" asp-controller="User" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <input type="hidden" asp-for="Id" />
+        </div>
+        <div class="form-group">
+            <p>Имя:</p>
+            <input type="text" asp-for="Name" />
+        </div>
+        <div class="form-group">
+            <p>Фамилия:</p>
+            <input type="text" asp-for="SName" />
+        </div>
+        <div class="form-group">
+            <p>Телефон:</p>
+            <input type="text" asp-for="Phone" />
+        </div>
+        <div class="form-group">
+            <p>Город:</p>
+            <input type="text" asp-for="City" />
+        </div>
+        <div class="form-group">
+            <p>Улица:</p>
+            <input type="text" asp-for="Street" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i>Сохранить</button>
+        </div>
+    </form>
+</div>

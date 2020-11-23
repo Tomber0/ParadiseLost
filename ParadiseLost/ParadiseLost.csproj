@@ -18,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\img\Profile\User\" />
+    <Folder Include="wwwroot\img\Profile\Company\" />
+    <Folder Include="wwwroot\img\Trip\" />
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,6 @@ namespace ParadiseLost.ViewModels
     public class UserProfileEditModel
     {
         public string Id { get; set; }
-
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Укажите почту")]
         public string Email { get; set; }
@@ -22,16 +21,6 @@ namespace ParadiseLost.ViewModels
         public string Password { get; set; }
         [Compare("Password", ErrorMessage = "Введенные пароли отличаются")]
         public string ComfirmPassword { get; set; }
-
-        public string Name { get; set; }
-        [MaxLength(250)]
-        public string SName { get; set; }
-        
-        [MaxLength(50)]
-        //
-        public string Phone { get; set; }
-        public string City { get; set; }
-        public string Street { get; set; }
 
     }
 }

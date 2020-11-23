@@ -4,10 +4,8 @@
 *@
 @model ParadiseLost.ViewModels.TripCreationEditModel
 
-<div class="col-1"></div>
-<div class="col-5 ml-3 mt-3 info-pannel">
-    @using (Html.BeginForm("EditTrip", "Trip", FormMethod.Post))
-    {
+<div class="col-5 ml-3 mt-3">
+    <form asp-action="Edit" asp-controller="Trip" method="post" enctype="multipart/form-data">
 
         <input type="hidden" name="Id" value="@Model.Id" />
 
@@ -39,15 +37,29 @@
             @Html.TextBoxFor(m => m.Location.Street, new { @class = "form-control" })
             <span asp-validation-for="Location.City" class="alert-info-label"></span>
         </p>
-
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" asp-for="Visible" value="True" id="customCheck1">
+            <label class="custom-control-label" for="customCheck1">Видимость в каталоге</label>
+        </div>
         <p>
-            @Html.LabelFor(m => m.Visible, "Видимо")<br>
-            @Html.CheckBoxFor(m => m.Visible, new { @class = "form-check-input", @checked = "checked" })
-            <span asp-validation-for="Visible" class="alert-info-label"></span>
-        </p>
-        <button type="submit" class="btn btn-primary">Добавить</button>
+        <input type="hidden" name="Imagestr" value="@Model.Imagestr" />
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Загрузить</span>
+            </div>
+            <div class="custom-file">
+                <input type="file" name="Image" asp-for="Image" class="custom-file-input" id="inputGroupFile01"
+                       aria-describedby="inputGroupFileAddon01">
+                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
+        </div>
 
-    }
+        </p>
+        <hr class="mb-4">
+
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Изменить</button>
+
+    </form>
 </div>
 
 

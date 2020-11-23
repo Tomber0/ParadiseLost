@@ -1,0 +1,72 @@
+﻿@*
+
+        Answer message
+        :
+        simple form
+        set viewed to true
+        add answer text
+    @model ParadiseLost.ViewModels.MessageCreateEditModel
+*@
+@model ParadiseLost.ViewModels.MessageCreateEditModel
+@{
+    ViewData["Title"] = "Ответ";
+}
+
+
+<div class="col-5 ml-3 mt-3 info-pannel">
+    @using (Html.BeginForm("Answer", "Message", FormMethod.Post))
+    {
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <p>
+            @Html.LabelFor(m => m.SelectedTrip.Name, "Выбранная путёвка")<br>
+            @Html.TextBoxFor(m => m.SelectedTrip.Name, new { @class = "default-input", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Reciver, "Компания")<br>
+            @Html.TextBoxFor(m => m.Reciver, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.MessageText, "Основной текст пользователя")<br>
+            @Html.TextAreaFor(m => m.MessageText, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>Данные пользователя: </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Email, "Почта пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.Email, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Name, "Имя пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.Name, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Name, "Фмилия пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.SName, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Phone, "Телефон пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.Phone, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Location.City, "Город пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.Location.City, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Location.Street, "Улица пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.Location.Street, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <br />
+        <br />
+        <p>
+            @Html.LabelFor(m => m.Invoker.Location.Street, "Ответ:")<br>
+            @Html.TextAreaFor(m => m.Answer, new { @class = "form-control" })
+            <span asp-validation-for="Answer" class="alert-info-label"></span>
+        </p>
+
+        <button type="submit" class="btn btn-primary">Ответить</button>
+    }
+</div>
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+

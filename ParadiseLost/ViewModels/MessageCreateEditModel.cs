@@ -12,12 +12,18 @@ namespace ParadiseLost.ViewModels
         public string Id { get; set; }
         [MaxLength(250)]
         public Trip SelectedTrip { get; set; }
+        public string SelectedTripId { get; set; }
         public bool IsViewed { get; set; }
         [MaxLength(600)]
         public string MessageText { get; set; }
-        [MaxLength(250)]
-        public User Invoker { get; set; }
-        [MaxLength(250)]
-        public Company Reciver { get; set; }
+        [MaxLength(70)]
+        public Contact Invoker { get; set; }
+        public string InvokerId { get; set; }
+
+        [MaxLength(70)]
+        public Contact Reciver { get; set; }
+        public string ReciverId { get; set; }
+        public string ReciverName { get; set; }
+        public string Answer { get; set; }
     }
 }

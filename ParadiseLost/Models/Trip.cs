@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,10 +25,10 @@ namespace ParadiseLost.Models
         [MaxLength(250)]
         public Location Location { get; set; }
         public Company Company { get; set; }
-
         public bool Visible { get; set; }
-        [MaxLength(3000)]
+        [MaxLength(300)]
         public string Tags { get; set; }
-
+        [MaxLength(100)]
+        public Images Image { get; set; }
     }
 }

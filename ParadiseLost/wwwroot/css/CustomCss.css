@@ -1,13 +1,8 @@
-﻿.bg-custom {
-    background-color: #505440;
-}
-.nav-text-color-custom {
+﻿.nav-text-color-custom {
     color :white;
 }
-.bg-color-custom{
 
-}
-.leftcol {
+.leftcol_121212 {
     background-image: url(../img/i2.png);
     background-repeat: no-repeat;
     background-position: center;
@@ -15,16 +10,16 @@
     background-size: 100% 100%;
     background-color: white;
 }
-.default-input {
+.default-input_121212 {
     border:none;
     border-bottom: 3px solid blue;
 }
-.default-input:focus {
+.default-input_121212:focus {
     
     border:none;
     border-bottom: 3px solid #00ff21;
 }
-.info-pannel {
+.info-pannel12121212 {
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;
@@ -34,3 +29,4 @@
     font-size:75%;
 
 }
+

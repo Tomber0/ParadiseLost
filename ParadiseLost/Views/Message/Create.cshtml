@@ -1,40 +1,39 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model ParadiseLost.ViewModels.MessageCreateEditModel
+﻿@model ParadiseLost.ViewModels.MessageCreateEditModel
+<div class=" ml-3 mt-3">
+    <form asp-action="Create" asp-controller="Message" method="post">
 
-<div class="col-1"></div>
 
-<div class="col-5 ml-3 mt-3 info-pannel">
-    @using (Html.BeginForm("CreateNew", "Message", FormMethod.Post))
-    {
-
-        <input type="hidden" name="Id" value="@Model.Id"/>
-        <input type="hidden" name="Invoker" value="@Model.Invoker"/>
-
+        <input type="hidden" name="InvokerId" value="@Model.InvokerId" asp-for="InvokerId" />
+        <input type="hidden" name="Id" value="@Model.Id" asp-for="Id" />
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <p>
-            @Html.LabelFor(m => m.SelectedTrip, "Выбранная путёвка")<br>
-            @Html.TextBoxFor(m => m.SelectedTrip, new { @class = "default-input" ,@disabled = "disabled" })
+            @Html.LabelFor(m => m.SelectedTrip, "Название")<br>
+            @Html.TextBoxFor(m => m.SelectedTrip.Name, new { @class = "default-input" })
             <span asp-validation-for="SelectedTrip" class="alert-info-label"></span>
         </p>
         <p>
             @Html.LabelFor(m => m.Reciver, "Компания")<br>
-            @Html.TextBoxFor(m => m.Reciver, new { @class = "form-control",@disabled = "disabled" })
+            @Html.TextBoxFor(m => m.Reciver.Name, new { @class = "form-control", @disabled = "disabled" })
             <span asp-validation-for="Reciver" class="alert-info-label"></span>
         </p>
+
         <p>
             @Html.LabelFor(m => m.MessageText, "Дополнительные данные(обратный адрес, телефон и т.д.)")<br>
-            @Html.TextAreaFor(m => m.MessageText, new { @class = "form-control" })
+            @Html.TextAreaFor(m => m.MessageText, new { @class = "default-input" })
             <span asp-validation-for="MessageText" class="alert-info-label"></span>
         </p>
-        <button type="submit" class="btn btn-primary">Добавить</button>
-    }
+
+
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Отправить</button>
+
+
+    </form>
 </div>
-@section scripts{
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-}
+
+
+
+        @section scripts{
+            <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        }
 

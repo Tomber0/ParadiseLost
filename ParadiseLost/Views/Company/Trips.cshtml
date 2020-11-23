@@ -1,0 +1,70 @@
+﻿@*
+    Trips
+    pannel
+
+    add plus button to create trips
+
+
+        <div class="col-1">
+        <div class="btn-group-vertical">
+            @Html.ActionLink("Профиль", "Index", "User", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Изменить данные для входа", "Edit", "User", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Изменить данные профиля(имя, город, улицу)", "Profile", "User", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Просмотреть сообщения", "Profile", "User", null, new { @class = "btn btn-primary" })
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Для работников компании
+            </button>
+            <div class="dropdown-menu">
+                @Html.ActionLink("Главная", "Index", "Company", null, new { @class = "dropdown-item" })
+                @Html.ActionLink("Путёвки компании", "Trips", "Company", null, new { @class = "dropdown-item" })
+                @Html.ActionLink("Изменение компании", "Edit", "Company", null, new { @class = "dropdown-item" })
+                @Html.ActionLink("Создание путёвки", "Create", "Trips", null, new { @class = "dropdown-item" })
+            </div>
+        </div>
+    </div>
+
+*@
+@{
+    ViewData["Title"] = "Путёвки";
+}
+
+@model IEnumerable<ParadiseLost.ViewModels.TripShowModel>
+<a asp-action="Create" asp-controller="Trip" class="alert-link"><i class="fa fa-plus"></i>Добавить</a>
+
+<div class="container p-3 my-3 border">
+    @if (Model.ToList().Count > 0)
+    {
+        @foreach (var trip in Model)
+        {
+            <div class="card mb-3" style="max-width:1080px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="@trip.Image.Path" class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">@trip.Name</h5>
+                            <form asp-action="Delete" asp-controller="Trip" asp-route-id="@trip.Id" method="post">
+                                <button class="btn btn-sm btn-primary" type="submit">Удалить</button>
+                                <a class="btn btn-sm btn-danger" asp-action="Edit" asp-controller="Trip" asp-route-id="@trip.Id">Изменить</a>
+                            </form>
+                            <p class="card-text">@trip.Description</p>
+                            <p class="card-text"><small class="text-muted">@trip.Tags</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+            <div class="col-md-6 px-0">
+                <h1 class="display-4 font-italic">Список пуст!</h1>
+                <p class="lead my-3">Путёвок нет</p>
+                <a asp-action="Create" asp-controller="Trip" class="alert-link">Добавте новую</a>
+            </div>
+        </div>
+    }
+</div>
+

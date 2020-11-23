@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,22 +20,85 @@ namespace ParadiseLost.Controllers
         ILogger<UserController> _logger;
         ApplicationDbContext _context;
         UserManager<User> _userManager;
-
-        public CompanyController(ILogger<UserController> logger, ApplicationDbContext context, UserManager<User> userManager)
+        RoleManager<IdentityRole> _roleManager;
+        public CompanyController(RoleManager<IdentityRole> roleManager, ILogger<UserController> logger, ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
             _logger = logger;
             _userManager = userManager;
-
+            _roleManager = roleManager;
         }
-
-        public IActionResult Index()
+        [Authorize]
+        public async Task<IActionResult> Trips() 
         {
-            return View();
-        }
-        public IActionResult Create() => View();
-        public IActionResult Edit() => View();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            var currentUser = await _context.Persons.Include(u=> u.Company).FirstOrDefaultAsync(u => u.Id == userId);
+            if (currentUser != null)
+            {
+                var currentUserCompany = currentUser.Company;
+                var compantTrips = await _context.Trips.Include(t=> t.Company).Include(t=> t.Image).Include(t=> t.Location).Where(t => t.Company.Id == currentUserCompany.Id).ToListAsync();
+                var tripModel = new List<TripShowModel>();
+                foreach (var item in compantTrips)
+                {
+                    var trip = new TripShowModel()
+                    {
+                        Id = item.Id,
+                        Company = item.Company,
+                        Description = item.Description,
+                        Image = item.Image,
+                        Location = item.Location,
+                        Name = item.Name,
+                        Tags = item.Tags
+                    };
+                    tripModel.Add(trip);
+                }
+                return View(tripModel);
+            }
+            else 
+            {
+                return RedirectToAction("Index","Home");
+            }
+            return View();
+        
+        }
+        [Authorize]
+        public async Task <IActionResult> Index()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _context.Persons.Include(p => p.Contact).Include(p=> p.Company).ThenInclude(c=> c.Contact).FirstOrDefaultAsync(u => u.Id == userId);
+            var a = User.IsInRole("company");
+            var user = await _userManager.FindByIdAsync(userId);
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            if (currentUser.Company == null) 
+            {
+                return NotFound();
+            }
+            var allMessages = _context.Messages.Include(m => m.Invoker).ThenInclude(r=> r.Location).Include(m => m.Reciver).ThenInclude(r => r.Location).Include(m => m.SelectedTrip).Where(m => m.Reciver.Id == currentUser.Company.Contact.Id);
+            var model = new List<MessageShowModel>();
+            foreach (var item in allMessages)
+            {
+                var message = new MessageShowModel()
+                {
+                    Id = item.Id,
+                    IsViewed = item.IsViewed,
+                    MessageAnswerText = item.AnswerText,
+                    MessageText = item.Text,
+                    SelectedTrip = item.SelectedTrip,
+                    UserInvoker = item.Invoker
+                };
+                model.Add(message);
+
+            }
+            return View(model);
+        }
+        [Authorize]
+        public IActionResult Create() => View();
+/*        [Authorize]
+        public IActionResult Edit() => View();
+*/
+        [Authorize]
         public async Task<IActionResult> RegisterNewCompany(CompanyCreateEditModel company) 
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -48,19 +113,34 @@ namespace ParadiseLost.Controllers
             }
             if (ModelState.IsValid) 
             {
-                var result = await _context.Companies.AddAsync(new Company
+                currentUser.Company = new Company
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Name = company.Name,
                     Description = company.Description,
-                    Contact = new  Contact
+                    Contact = new Contact
                     {
                         Id = Guid.NewGuid().ToString(),
+                        Name = company.Name,
                         Email = company.Email,
-                        Phone = company.Phone
+                        Phone = company.Phone,
+                        Location = new Location()
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            City = company.City,
+                            Street = company.Street
+                        }
                     },
-                    Id = Guid.NewGuid().ToString()
-                }) ;
-                
+                    Code = GenerateCompanyCode()
+                };
+                var user = await _userManager.FindByIdAsync(userId);
+                var userRoles = await _userManager.GetRolesAsync(user);
+                userRoles.Add("company");
+
+                await _userManager.AddToRolesAsync(user, userRoles);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Company");
+
             }
             else
             {
@@ -68,21 +148,25 @@ namespace ParadiseLost.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-
-        public async Task<IActionResult> EditCompany(CompanyCreateEditModel company) 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(CompanyCreateEditModel company) 
         {
             if (company != null)
             {
-                var oldCompany = await _context.Companies.FirstOrDefaultAsync(t => t.Id == company.Id);
+                var oldCompany = await _context.Companies.Include(c=>c.Contact).ThenInclude(c=> c.Location).FirstOrDefaultAsync(t => t.Id == company.Id);
                 if (oldCompany != null) 
                 {
                     oldCompany.Description = company.Description;
                     oldCompany.Contact.Phone = company.Phone;
                     oldCompany.Contact.Email = company.Email;
                     oldCompany.Name = company.Name;
+                    oldCompany.Contact.Name = company.Name;
                     oldCompany.Contact.Location.Street = company.Street;
                     oldCompany.Contact.Location.City = company.City;
                     await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Company");
+
                 }
                 else 
                 {
@@ -93,13 +177,59 @@ namespace ParadiseLost.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-
-        public async Task<IActionResult> EditCompany(string id) 
+        public string GenerateCompanyCode() 
         {
-            if (id != null) 
+            StringBuilder result = new StringBuilder();
+            string letters = "ABCDEFGHIKLMNOPQRSTVXYZabcdefghijklmnopqrstuvwxyz!@#1234567890";
+            Random random = new Random(1231);
+            for (int i = 0; i < 10; i++)
             {
-                var company = await _context.Companies.FirstOrDefaultAsync(c=> c.Id == id);
-                if (company != null) 
+                result.Append(letters[random.Next(0, letters.Length)]);
+                //random.Next(0, letters.Length);
+            }
+            return result.ToString();
+        }
+        public async Task<IActionResult> EditC(string id) //
+        {
+            /*            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var currentUser = await _context.Persons.Include(p => p.Company).FirstOrDefaultAsync(u => u.Id == userId);
+                        var companyId = await _context.Persons.Include(p => p.Company).ThenInclude(c => c.Contact).ThenInclude(c => c.Location).Where(currentUser.Company == );
+            */
+            if (id != null)
+            {
+                var company = await _context.Companies.Include(c=>c.Contact).ThenInclude(c=> c.Location).FirstOrDefaultAsync(c => c.Id == id);
+                if (company != null)
+                {
+                    CompanyCreateEditModel newCompany = new CompanyCreateEditModel
+                    {
+                        City = company.Contact.Location.City,
+                        Description = company.Description,
+                        Email = company.Contact.Email,
+                        Id = company.Id,
+                        Name = company.Contact.Name,
+                        Phone = company.Contact.Phone,
+                        Street = company.Contact.Location.Street
+                    };
+
+                    return View(newCompany);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> Edit() //
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _context.Persons.Include(p => p.Company).FirstOrDefaultAsync(u => u.Id == userId);
+            var id = currentUser.Company.Id;
+
+            if (id != null)
+            {
+                var company = await _context.Companies.Include(c => c.Contact).ThenInclude(c => c.Location).FirstOrDefaultAsync(c => c.Id == id);
+                if (company != null)
                 {
                     CompanyCreateEditModel newCompany = new CompanyCreateEditModel
                     {
@@ -123,7 +253,7 @@ namespace ParadiseLost.Controllers
 
         }
 
-        public async Task<IActionResult> DeleteCompany(string id)
+        public async Task<IActionResult> Delete(string id)//
         {
             if (id != null) 
             {
@@ -135,6 +265,54 @@ namespace ParadiseLost.Controllers
             return RedirectToAction("Index", "Home");
 
         }
+        [HttpPost]
+        public async Task<IActionResult> CompanyLogin(UserCompanyLoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId != null)
+                {
+                    string code = model.Code;
+                    var currentUser = await _context.Persons.
+                            Include(u => u.Contact).
+                        FirstOrDefaultAsync(u => u.Id == userId);
+                    currentUser.Contact.Code = code;
 
+
+                    var userTryingtoLoginCompany = await _context.Companies.FirstOrDefaultAsync(c => c.Code == code);
+                    if (userTryingtoLoginCompany != null)
+                    {
+                        var user = await _userManager.FindByIdAsync(userId);
+                        var userRoles = await _userManager.GetRolesAsync(user);
+                        userRoles.Add("company");
+
+                        await _userManager.AddToRolesAsync(user, userRoles);
+
+                        if (currentUser.Company.Id == userTryingtoLoginCompany.Id)
+                        {
+                            return RedirectToAction("Index", "Company");
+                        }
+                        currentUser.Company = userTryingtoLoginCompany;
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction("Index", "Company");
+                    }
+                    else 
+                    {
+
+                        var user = await _userManager.FindByIdAsync(userId);
+/*
+                        var userRoles = await _userManager.GetRolesAsync(user);
+
+                        var newRoles = userRoles.Remove("company");
+
+*/                        await _userManager.AddToRoleAsync(user, "company");
+
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

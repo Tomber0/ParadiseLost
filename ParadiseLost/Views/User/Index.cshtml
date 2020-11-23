@@ -1,5 +1,10 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
+@model ParadiseLost.ViewModels.UserOuterProfileChangeViewModel
+<div class="container p-3 my-3 border">
+    <h1>Профиль:</h1>
+    <p>Ваше имя:@Model.Name</p>
+    <p>Ваша фамилия:@Model.SName</p>
+    <p>Ваш телефон:@Model.Phone</p>
+    <p>Город:@Model.City</p>
+    <p>Улица:@Model.Street</p>
+</div>

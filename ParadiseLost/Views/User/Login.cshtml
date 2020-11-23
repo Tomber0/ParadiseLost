@@ -1,33 +1,43 @@
-﻿@model ParadiseLost.ViewModels.UserLoginModel
-    <div class="row">
-        <div class="col-1"></div>
-        <div class="col-4 ml-3 mt-3 info-pannel" >
-            @using (Html.BeginForm("LoginIntoAccount", "User", FormMethod.Post))
-            {
-                <div class="validation" asp-validation-summary="ModelOnly"></div>
-                <p>
-                    @Html.LabelFor(m => m.UserName, "Имя")<br>
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "default-input" })
-                    <span asp-validation-for="UserName" class="alert-info-label"></span>
-                </p>
-                <p>
-                    @Html.LabelFor(m => m.Password, "Пароль")<br>
-                    @Html.PasswordFor(m => m.Password,new { @class = "default-input" })
+﻿@*
 
-                    <span asp-validation-for="Password" class="alert-info-label"></span>
 
-                </p>
-                <p>
-                    <input type="submit"  value="Отправить" />
-                </p>
-            }
-        </div>
-        @section scripts{
+    @using (Html.BeginForm("LoginIntoAccount", "User", FormMethod.Post))
+    {
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <p>
+            @Html.LabelFor(m => m.UserName, "Имя")<br>
+            @Html.TextBoxFor(m => m.UserName, new { @class = "default-input" })
+            <span asp-validation-for="UserName" class="alert-info-label"></span>
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Password, "Пароль")<br>
+            @Html.PasswordFor(m => m.Password, new { @class = "default-input" })
+            <span asp-validation-for="Password" class="alert-info-label"></span>
+        </p>
+        <p>
+            <input type="submit" value="Отправить" />
+        </p>
+    }
+*@
+@model ParadiseLost.ViewModels.UserLoginModel
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-4 ml-3 mt-3 info-pannel">
+        <form asp-action="LoginIntoAccount" asp-controller="User" class="form-signin">
+            <h1 class="h3 mb-3 font-weight-normal">Вход</h1>
+            <label for="inputEmail" class="sr-only">Адрес почты</label>
+            <input asp-for="UserName" type="text" id="userName" class="form-control" placeholder="Имя пользователя" required="" autofocus="">
+            <span asp-validation-for="UserName" class="alert-info-label"></span>
+            <label for="inputPassword" class="sr-only">Пароль</label>
+            <input type="password" asp-for="Password" id="Password" class="form-control" placeholder="Password" required="">
+            <span asp-validation-for="Password" class="alert-info-label"></span>
 
-            <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-        }
-
-        
-    
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Вход</button>
+            <p class="mt-5 mb-3 text-muted">© БНТУ 2020</p>
+        </form>
     </div>
+</div>
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}    

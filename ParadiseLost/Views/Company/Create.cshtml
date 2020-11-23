@@ -1,13 +1,13 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Компания";
+}
+
 @model ParadiseLost.ViewModels.CompanyCreateEditModel
 <div class="col-1"></div>
 
-<div class="col-5 ml-3 mt-3 info-pannel">
-    @using (Html.BeginForm("CreateNew", "Company", FormMethod.Post))
+<div class="col-5 ml-3 mt-3  mb-3">
+    @using (Html.BeginForm("RegisterNewCompany", "Company", FormMethod.Post))
     {
-
-        <input type="hidden" name="Id" value="@Model.Id" />
-
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <p>
             @Html.LabelFor(m => m.Name, "Название компании")<br>
@@ -21,7 +21,7 @@
         </p>
         <p>
             @Html.LabelFor(m => m.Email, "Электронная почта")<br>
-            @Html.TextAreaFor(m => m.Email, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
             <span asp-validation-for="Email" class="alert-info-label"></span>
         </p>
         <p>
@@ -40,15 +40,13 @@
             @Html.LabelFor(m => m.Street, "Улица")<br>
             @Html.TextBoxFor(m => m.Street, new { @class = "form-control" })
             <span asp-validation-for="Street" class="alert-info-label"></span>
-        </p>
 
-        <button type="submit" class="btn btn-primary">Добавить</button>
+        </p>
+        <hr class="mb-4">
+        <button type="submit" class="btn btn-lg btn-block btn-primary">Добавить</button>
 
     }
 </div>
-
-
-
 
 @section scripts{
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>

@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ParadiseLost.Models
+namespace ParadiseLost.ViewModels
 {
-    public class Contact
-    {        
-        [Key]
+    public class UserProfileShowViewModel
+    {
         [MaxLength(50)]
         public string Id { get; set; }
         [MaxLength(50)]
@@ -18,9 +17,9 @@ namespace ParadiseLost.Models
         [MaxLength(50)]
         public string Phone { get; set; }
         [MaxLength(50)]
+        public string City { get; set; }
+        [MaxLength(50)]
+        public string Street { get; set; }
         public string Email { get; set; }
-        public Location Location { get; set; }
-        [MaxLength(15)]
-        public string Code { get; set; }
     }
 }
