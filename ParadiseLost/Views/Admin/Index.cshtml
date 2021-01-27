@@ -6,6 +6,7 @@
 
 
 @Html.ActionLink("Добавть пользователя", "Create")
+<a asp-action="Index" asp-controller="Roles">Роли</a>
 <table class="table">
     <tr><th>Email</th><th>Имя</th></tr>
     @foreach (var user in Model)

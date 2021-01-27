@@ -31,8 +31,11 @@ namespace ParadiseLost.Controllers
         // userpage -> messages
         public async Task <IActionResult> Index()
         {
+            
             var allUserMessages = _context.Messages.ToList();
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+                return NotFound();
             var currentUser = await _context.Persons.FirstOrDefaultAsync(u => u.Id == userId);
             if (currentUser != null) 
             {
@@ -51,10 +54,29 @@ namespace ParadiseLost.Controllers
         [Authorize]
         public async Task <IActionResult> Create(string id) 
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _context.Persons.Include(u => u.Contact).ThenInclude(c=> c.Location).FirstOrDefaultAsync(u => u.Id == userId);
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
             var selTrip = await _context.Trips.Include(t=> t.Company).ThenInclude(c=> c.Contact).FirstOrDefaultAsync(t => t.Id == id);
-            MessageCreateEditModel message = new MessageCreateEditModel() { Id = Guid.NewGuid().ToString(), SelectedTrip = selTrip,Reciver = selTrip.Company.Contact };
-            Message mesg = new Message() { Id = message.Id, SelectedTrip = selTrip, Reciver = selTrip.Company.Contact};
-            await _context.Messages.AddAsync(mesg);
+            MessageCreateEditModel message = new MessageCreateEditModel()
+            {
+                MessageText = "",
+                Answer = "",
+                IsViewed = false,
+                Id = selTrip.Id,
+                SelectedTrip = selTrip,
+                Reciver = selTrip.Company.Contact
+                , Invoker = currentUser.Contact,
+                InvokerId = currentUser.Contact.Id,
+                ReciverId = selTrip.Company.Contact.Id,
+                InvokerStreet = currentUser.Contact.Location.Street,
+                InvokerCity = currentUser.Contact.Location.City
+            };
+            //Message mesg = new Message() { Id = message.Id,Text="",Invoker= currentUser.Contact, AnswerText="", SelectedTrip = selTrip, Reciver = selTrip.Company.Contact};
+            //await _context.Messages.AddAsync(mesg);
             _context.SaveChanges();
             return View(message); 
         }
@@ -66,7 +88,27 @@ namespace ParadiseLost.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var currentUser = await _context.Persons.Include(u=> u.Contact).FirstOrDefaultAsync(u => u.Id == userId);
-                var message = await _context.Messages.Include(m => m.Invoker).Include(m => m.Reciver).Include(m => m.SelectedTrip).ThenInclude(t => t.Company).ThenInclude(t => t.Contact).FirstOrDefaultAsync(t=>t.Id == messageModel.Id);
+                if (userId == null)
+                    return NotFound();
+                if (messageModel.MessageText == null) 
+                {
+                    return RedirectToAction("Index", "Home");
+
+                }
+                var companyContact = await _context.Companies.Include(c=> c.Contact).FirstOrDefaultAsync(c => messageModel.ReciverId == c.Contact.Id);
+                var selTrip = await _context.Trips.FirstOrDefaultAsync(c=> c.Id==messageModel.Id);
+                //var message = await _context.Messages.Include(m => m.Invoker).Include(m => m.Reciver).Include(m => m.SelectedTrip).ThenInclude(t => t.Company).ThenInclude(t => t.Contact).FirstOrDefaultAsync(t=>t.Id == messageModel.Id);
+                Message message = new Message()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Text = messageModel.MessageText,
+                    Invoker = currentUser.Contact,
+                    AnswerText = "",
+                    SelectedTrip = selTrip,
+                    Reciver = companyContact.Contact
+                };
+                await _context.Messages.AddAsync(message);
+
                 if (currentUser != null)
                 {
                         message.Text = messageModel.MessageText;
@@ -159,7 +201,6 @@ namespace ParadiseLost.Controllers
                 message.IsViewed = true;
                 _context.SaveChanges();
                 return RedirectToAction("Index", "Company");//
-
             }
             return RedirectToAction("Index", "Message");
         }

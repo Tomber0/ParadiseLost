@@ -100,8 +100,9 @@ namespace ParadiseLost.Controllers
                 {
                     return NotFound();
                 }
+                _logger.LogInformation($"Trp-created\n{trip.Id}");
 
-                    await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                     //Trip existingTrip = await  _context.Trips.FirstOrDefaultAsync(t => t.)               
             }
             return RedirectToAction("Trips", "Company");
@@ -138,6 +139,8 @@ namespace ParadiseLost.Controllers
 
                 }
             }
+            _logger.LogInformation($"Trp-changed-\n{trip.Id}");
+
             _context.SaveChanges();
             return RedirectToAction("Trips", "Company");
         }
@@ -153,7 +156,6 @@ namespace ParadiseLost.Controllers
                         Description = trip.Description,
                         Location = new Location
                         {
-
                             City = trip.Location.City,
                             Coordinates = trip.Location.Coordinates,
                             Street = trip.Location.Street,
@@ -179,7 +181,10 @@ namespace ParadiseLost.Controllers
         {
             if (id != null)
             {
-                var trip = await _context.Trips.FirstOrDefaultAsync(c => c.Id == id);
+                var trip = await _context.Trips.Include(t=> t.Location).Include(t=> t.Image).FirstOrDefaultAsync(c => c.Id == id);
+
+                var messages = _context.Messages.Include(m => m.SelectedTrip).Where(m => m.SelectedTrip == trip).ToArray();
+                _context.Messages.RemoveRange(messages);
                 var result = _context.Trips.Remove(trip);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Trips", "Company");

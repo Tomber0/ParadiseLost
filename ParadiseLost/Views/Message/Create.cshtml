@@ -1,35 +1,60 @@
 ﻿@model ParadiseLost.ViewModels.MessageCreateEditModel
-<div class=" ml-3 mt-3">
-    <form asp-action="Create" asp-controller="Message" method="post">
-
-
-        <input type="hidden" name="InvokerId" value="@Model.InvokerId" asp-for="InvokerId" />
+<div class="ml-3 mt-3 col-12">
+    @using (Html.BeginForm("Create", "Message", FormMethod.Post))
+    {
+        <input type="hidden" name="InvokerId" value="@Model.InvokerId" asp-for="InvokerId"/>
+        <input type="hidden" name="SelectedTrip" value="@Model.SelectedTrip" asp-for="SelectedTrip" />
+        <input type="hidden" name="Invoker" value="@Model.Invoker" asp-for="Invoker"/>
+        <input type="hidden" name="ReciverId" value="@Model.ReciverId" asp-for="ReciverId"/>
         <input type="hidden" name="Id" value="@Model.Id" asp-for="Id" />
         <div class="validation" asp-validation-summary="ModelOnly"></div>
+
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
         <p>
-            @Html.LabelFor(m => m.SelectedTrip, "Название")<br>
-            @Html.TextBoxFor(m => m.SelectedTrip.Name, new { @class = "default-input" })
-            <span asp-validation-for="SelectedTrip" class="alert-info-label"></span>
+            @Html.LabelFor(m => m.SelectedTrip.Name, "Выбранная путёвка")<br>
+            @Html.TextBoxFor(m => m.SelectedTrip.Name, new { @class = "default-input", @disabled = "disabled" })
         </p>
         <p>
-            @Html.LabelFor(m => m.Reciver, "Компания")<br>
+            @Html.LabelFor(m => m.Reciver.Name, "Компания")<br>
             @Html.TextBoxFor(m => m.Reciver.Name, new { @class = "form-control", @disabled = "disabled" })
-            <span asp-validation-for="Reciver" class="alert-info-label"></span>
         </p>
-
+        <p>Ваши данные </p>
         <p>
-            @Html.LabelFor(m => m.MessageText, "Дополнительные данные(обратный адрес, телефон и т.д.)")<br>
-            @Html.TextAreaFor(m => m.MessageText, new { @class = "default-input" })
+            @Html.LabelFor(m => m.Invoker.Email, "Почта пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.Email, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Name, "Имя пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.Name, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Name, "Фмилия пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.SName, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Phone, "Телефон пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.Phone, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Location.City, "Город пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.Location.City, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Invoker.Location.Street, "Улица пользователя:")<br>
+            @Html.TextBoxFor(m => m.Invoker.Location.Street, new { @class = "form-control", @disabled = "disabled" })
+        </p>
+        <br />
+        <br />
+        <p>
+            @Html.LabelFor(m => m.MessageText, "Дополнительные данные")<br>
+            @Html.TextAreaFor(m => m.MessageText, new { @class = "default-input col-12  " })
             <span asp-validation-for="MessageText" class="alert-info-label"></span>
+
         </p>
 
-
-        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Отправить</button>
-
-
-    </form>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    }
 </div>
-
 
 
         @section scripts{

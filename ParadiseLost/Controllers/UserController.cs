@@ -100,6 +100,8 @@ namespace ParadiseLost.Controllers
                 Street = user.Contact.Location.Street,
                 Id = user.Id
             };
+            _logger.LogInformation($"User-changed profile\n{user.Id}");
+
             return View(userModel);
         }
         [HttpPost]
@@ -171,6 +173,24 @@ namespace ParadiseLost.Controllers
             {
                 return NotFound();
             }
+            if (user.Contact == null) 
+            {
+                user.Contact = new Contact()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Email = user.Email,
+                    Code = "",
+                    Location = new Location()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        City = "",
+                        Street = ""
+                    },
+                    Name = "",
+                    Phone = "",
+                    SName = ""
+                };
+            }
             var userModel = new UserOuterProfileChangeViewModel()
             {
                 City = user.Contact.Location.City,
@@ -218,8 +238,13 @@ namespace ParadiseLost.Controllers
                         Name = "",
                         Phone = "",
                         SName = ""
+                    },
+/*                    Company= new Company() 
+                    {
+                        Id="",
+                        
                     }
-                    };
+*/                    };
                     var result = await _userManager.CreateAsync(user, userModel.Password);
 
 
@@ -232,26 +257,10 @@ namespace ParadiseLost.Controllers
 
                         //await _context.Contacts.AddAsync(new Contact() {Id = Guid.NewGuid().ToString(),Email = user.Email});
                         var cUser = await _context.Persons.FirstOrDefaultAsync(u => u.Id ==  user.Id);
-/*                        cUser.Contact = new Contact()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Email = user.Email,
-                            Code = "",
-                            Location = new Location()
-                            {
-                                Id = Guid.NewGuid().ToString(),
-                                City = "",
-                                Coordinates = "",
-                                Street = ""
-                            }
-                        ,
-                            Name = "",
-                            Phone = "",
-                            SName = ""
-                        };
-*/
-                        
+
+
                         _context.SaveChanges();
+                        _logger.LogInformation($"User created:\nId:{user.Id}");
                         await _signInManager.PasswordSignInAsync(userModel.UserName, userModel.Password, true, true);
                         return RedirectToAction("Index","User");
                     }

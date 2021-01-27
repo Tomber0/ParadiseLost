@@ -13,7 +13,7 @@
 }
 
 
-<div class="col-5 ml-3 mt-3 info-pannel">
+<div class="ml-3 mt-3 col-12">
     @using (Html.BeginForm("Answer", "Message", FormMethod.Post))
     {
         <div class="validation" asp-validation-summary="ModelOnly"></div>
@@ -58,7 +58,7 @@
         <br />
         <p>
             @Html.LabelFor(m => m.Invoker.Location.Street, "Ответ:")<br>
-            @Html.TextAreaFor(m => m.Answer, new { @class = "form-control" })
+            @Html.TextAreaFor(m => m.Answer, new { @class = "form-control cols=80  rows=80" })
             <span asp-validation-for="Answer" class="alert-info-label"></span>
         </p>
 

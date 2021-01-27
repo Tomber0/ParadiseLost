@@ -25,5 +25,8 @@ namespace ParadiseLost.ViewModels
         public string ReciverId { get; set; }
         public string ReciverName { get; set; }
         public string Answer { get; set; }
+
+        public string InvokerStreet { get; set; }
+        public string InvokerCity { get; set; }
     }
 }

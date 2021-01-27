@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace ParadiseLost.Controllers
             if (ModelState.IsValid) 
             {
                 User oldUser = await _userManager.FindByIdAsync(userModel.Id);
+                //User.HasClaim(ClaimTypes.Role)
                 if (oldUser != null) 
                 {
                     oldUser.Email = userModel.Email;
@@ -70,8 +72,6 @@ namespace ParadiseLost.Controllers
                     if (result.Succeeded) 
                     {
                         RedirectToAction("Index");
-
-
                     }
                     //UserEditModel userModel = new UserEditModel { Email = user.Email, UserName = user.UserName };
                     else

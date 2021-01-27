@@ -42,7 +42,11 @@
             @Html.TextBoxFor(m => m.Street, new { @class = "form-control" })
             <span asp-validation-for="Street" class="alert-info-label"></span>
         </p>
+        <p>
+            Код для входа в компанию: @Model.Code
 
+        </p>
+        <hr class="mb-4">
         <button type="submit" class="btn btn-primary">Добавить</button>
 
     }

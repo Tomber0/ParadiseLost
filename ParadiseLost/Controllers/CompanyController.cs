@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +22,11 @@ namespace ParadiseLost.Controllers
         ApplicationDbContext _context;
         UserManager<User> _userManager;
         RoleManager<IdentityRole> _roleManager;
-        public CompanyController(RoleManager<IdentityRole> roleManager, ILogger<UserController> logger, ApplicationDbContext context, UserManager<User> userManager)
+        SignInManager<User> _signInManager;
+
+        public CompanyController(SignInManager<User> signInManager,RoleManager<IdentityRole> roleManager, ILogger<UserController> logger, ApplicationDbContext context, UserManager<User> userManager)
         {
+            _signInManager = signInManager;
             _context = context;
             _logger = logger;
             _userManager = userManager;
@@ -62,16 +66,19 @@ namespace ParadiseLost.Controllers
             return View();
         
         }
-        [Authorize]
+        [Authorize(Roles ="company")]
         public async Task <IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+                return NotFound();
+
             var currentUser = await _context.Persons.Include(p => p.Contact).Include(p=> p.Company).ThenInclude(c=> c.Contact).FirstOrDefaultAsync(u => u.Id == userId);
             var a = User.IsInRole("company");
             var user = await _userManager.FindByIdAsync(userId);
             var userRoles = await _userManager.GetRolesAsync(user);
 
-            if (currentUser.Company == null) 
+            if (currentUser.Company.Id.Length ==0) 
             {
                 return NotFound();
             }
@@ -102,10 +109,13 @@ namespace ParadiseLost.Controllers
         public async Task<IActionResult> RegisterNewCompany(CompanyCreateEditModel company) 
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+                return NotFound();
+
             var currentUser = await _context.Persons.FirstOrDefaultAsync(u => u.Id == userId);
             if (currentUser != null)
             {
-                var currentUserCompany = currentUser.Company;
+                //var currentUserCompany = currentUser.Company;
             }
             else
             {
@@ -181,7 +191,7 @@ namespace ParadiseLost.Controllers
         {
             StringBuilder result = new StringBuilder();
             string letters = "ABCDEFGHIKLMNOPQRSTVXYZabcdefghijklmnopqrstuvwxyz!@#1234567890";
-            Random random = new Random(1231);
+            Random random = new Random();
             for (int i = 0; i < 10; i++)
             {
                 result.Append(letters[random.Next(0, letters.Length)]);
@@ -220,6 +230,8 @@ namespace ParadiseLost.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+        [Authorize(Roles ="company")]
         public async Task<IActionResult> Edit() //
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -239,7 +251,8 @@ namespace ParadiseLost.Controllers
                         Id = company.Id,
                         Name = company.Name,
                         Phone = company.Contact.Phone,
-                        Street = company.Contact.Location.Street
+                        Street = company.Contact.Location.Street,
+                        Code = company.Code
                     };
 
                     return View(newCompany);
@@ -274,8 +287,18 @@ namespace ParadiseLost.Controllers
                 if (userId != null)
                 {
                     string code = model.Code;
+                    if (code == null)
+                    {
+                        var user = await _userManager.FindByIdAsync(userId);
+                        var userRoles = await _userManager.GetRolesAsync(user);
+                        userRoles.Remove("company");
+
+                        return RedirectToAction("Index", "Home");
+
+                    }
                     var currentUser = await _context.Persons.
                             Include(u => u.Contact).
+                            Include(u=> u.Company).
                         FirstOrDefaultAsync(u => u.Id == userId);
                     currentUser.Contact.Code = code;
 
@@ -286,11 +309,16 @@ namespace ParadiseLost.Controllers
                         var user = await _userManager.FindByIdAsync(userId);
                         var userRoles = await _userManager.GetRolesAsync(user);
                         userRoles.Add("company");
-
+                        await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+                        await _signInManager.SignInAsync(user, true);
                         await _userManager.AddToRolesAsync(user, userRoles);
+                        if (user.Company == null)
+                            user.Company = userTryingtoLoginCompany;
 
                         if (currentUser.Company.Id == userTryingtoLoginCompany.Id)
                         {
+                            await _context.SaveChangesAsync();
+
                             return RedirectToAction("Index", "Company");
                         }
                         currentUser.Company = userTryingtoLoginCompany;

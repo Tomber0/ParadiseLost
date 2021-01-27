@@ -48,8 +48,16 @@
                             <a class="nav-link" asp-action="Login" asp-controller="User">Вход</a>
                         </li>
                     }
+                    @if (User.IsInRole("admin"))
+                    {
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Admin" class="nav-link">Панель администратора</a>
+                </li>
 
-</ul>
+
+                    }
+
+                </ul>
             </div>
         </nav>
     </header>
@@ -69,16 +77,16 @@
                                 Для работников компании
                             </button>
                             <div class="dropdown-menu">
-                                @if (User.IsInRole("company"))
+                                @if ( User.HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "company"))
                                 {
-                                <a asp-action="Index" asp-controller="Company" class="dropdown-item">Главная</a>
-                                <a asp-action="Trips" asp-controller="Company" class="dropdown-item">Путёвки компании</a>
-                                <a asp-action="Edit" asp-controller="Company" class="dropdown-item">Изменение компании</a>
+                                    <a asp-action="Index" asp-controller="Company" class="dropdown-item">Главная</a>
+                                    <a asp-action="Trips" asp-controller="Company" class="dropdown-item">Путёвки компании</a>
+                                    <a asp-action="Edit" asp-controller="Company" class="dropdown-item">Изменение компании</a>
 
                                 }
-                                else 
+                                else
                                 {
-                                <a asp-action="Create" asp-controller="Company" class="dropdown-item">Создание компании</a>
+                                    <a asp-action="Create" asp-controller="Company" class="dropdown-item">Создание компании</a>
                                 }
                                 <a asp-action="CompanyLogin" asp-controller="User" class="dropdown-item">Вход в компанию</a>
                             </div>

@@ -8,7 +8,7 @@
 <div class="jumbotron" style="background-size:cover; background-image:url(@Model.Image.Path)">
     <h1 class="display-4">@Model.Name</h1>
     <hr class="my-4">
-    <form asp-action="Create" asp-controller="Message" asp-route-id="@Model.Id" method="post">
+    <form asp-action="Create" asp-controller="Message" asp-route-id="@Model.Id" method="get">
         <button class="btn btn-sm btn-warning" type="submit">Выбрать</button>
     </form>
     <small class="text-muted">@Model.Tags</small>
